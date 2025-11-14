@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Синие Шары - Бесконечный Бегун</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+        <div id="score">Счет: 0</div>
+        
+        <div id="instructions">
+            <h2>Синие Шары: Уклонение!</h2>
+            <p>Настольный ПК:</p>
+            <ul>
+                <li>**Прыжок:** **Стрелка Вверх** или **Пробел**</li>
+                <li>**Присесть/Уклониться:** **Стрелка Вниз**</li>
+            </ul>
+            <p>Мобильный: Используйте **Кнопки** внизу экрана.</p>
+            <button id="startButton">Начать Игру</button>
+        </div>
+        
+        <div id="gameOverScreen" style="display:none;">
+            <h2>Игра Окончена! 😭</h2>
+            <p>Финальный Счет: <span id="finalScore">0</span></p>
+            <button id="restartButton">Играть Снова</button>
+        </div>
+
+        <div id="mobileControls" style="display: none;">
+            <button id="jumpButton" class="control-button">⏫ Прыжок</button>
+            <button id="duckButton" class="control-button">⏬ Присесть</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

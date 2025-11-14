@@ -1,0 +1,139 @@
+/* ... (стили body, #game-container, canvas, #score, #instructions, #gameOverScreen остаются как были) ... */
+body {
+    margin: 0;
+    overflow: hidden; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #222;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+#game-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    height: 100vh;
+    max-height: 1000px; 
+    background-color: #333;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+canvas {
+    background-color: #87CEEB;
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 800px;
+    max-height: 1000px;
+    transition: background-color 2s ease-in-out;
+}
+
+.decor {
+    position: absolute;
+    font-size: 2em;
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0.8;
+}
+
+#score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 1.5em;
+    z-index: 10;
+}
+
+#instructions, #gameOverScreen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 20;
+    border: 3px solid #007bff;
+}
+
+#instructions ul {
+    list-style: none;
+    padding: 0;
+}
+
+/* Стили для мобильных кнопок */
+#mobileControls {
+    position: absolute;
+    bottom: 0; /* Прикрепить ко дну */
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 30; /* Выше всего остального */
+    pointer-events: none; /* Сначала игнорировать клики */
+}
+
+.control-button {
+    flex-grow: 1;
+    height: 15vh; /* Большая область для нажатия */
+    max-height: 100px;
+    background-color: rgba(0, 123, 255, 0.3); /* Полупрозрачный синий */
+    border: none;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+    margin: 5px;
+    border-radius: 5px;
+    pointer-events: auto; /* Вернуть кликабельность кнопкам */
+    user-select: none; /* Отключить выделение текста */
+    transition: background-color 0.1s;
+}
+
+.control-button:active {
+    background-color: rgba(0, 123, 255, 0.6);
+}
+
+/* Скрываем кнопки на больших экранах (десктоп) */
+@media (min-width: 769px) {
+    #mobileControls {
+        display: none !important; 
+    }
+}
+
+/* Показываем кнопки на маленьких экранах (мобильный) */
+@media (max-width: 768px) {
+    #game-container {
+        width: 100vw;
+        height: 100vh;
+        max-width: unset;
+        max-height: unset;
+    }
+}
+/* ... (стили кнопок остаются как были) ... */
+button {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
