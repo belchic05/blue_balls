@@ -35,6 +35,8 @@ const PLAYER_WIDTH = 50;
 const GROUND_HEIGHT = 50;
 const MAX_GAME_WIDTH = 800; 
 const MAX_GAME_HEIGHT = 1000; 
+// Дополнительная высота, которую нужно вычесть из высоты холста на мобильном телефоне
+const MOBILE_CONTROLS_HEIGHT = 150; // Примерно 150px для мобильных кнопок и запаса
 
 // === Препятствия ===
 const OBSTACLE_CACTUS = 0; 
@@ -70,13 +72,13 @@ const NIGHT_COLOR = '#191970';
 let decors = [];
 
 // Изображения игрока
-const walkImage = new Image(); // НОВОЕ
+const walkImage = new Image(); 
 walkImage.src = 'walk.png'; 
 
-const jumpImage = new Image(); // НОВОЕ
+const jumpImage = new Image(); 
 jumpImage.src = 'jump.png'; 
 
-const sitImage = new Image(); // НОВОЕ
+const sitImage = new Image(); 
 sitImage.src = 'sit.png'; 
 
 // Изображения препятствий
@@ -87,28 +89,37 @@ const birdImage = new Image();
 birdImage.src = 'bird.png'; 
 
 
-// Функция для настройки размеров холста
+// Функция для настройки размеров холста (ИСПРАВЛЕНИЕ)
 function resizeCanvas() {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
     
-    if (viewportWidth < 768) {
+    // Обновляем флаг мобильного устройства
+    isMobileDevice = viewportWidth < 768;
+    mobileControls.style.display = isMobileDevice ? 'flex' : 'none';
+
+    if (isMobileDevice) {
+        // На мобильных устройствах, уменьшаем высоту холста, чтобы оставить место для кнопок
         canvas.width = viewportWidth;
-        canvas.height = viewportHeight;
+        // Вычитаем высоту мобильных контроллеров и небольшой запас
+        canvas.height = viewportHeight - MOBILE_CONTROLS_HEIGHT;
+        
+        // Ограничиваем контейнер, чтобы он не прокручивался
         gameContainer.style.maxWidth = '100vw';
         gameContainer.style.maxHeight = '100vh';
+        
     } else {
+        // На десктопе используем максимальные значения
         canvas.width = Math.min(viewportWidth, MAX_GAME_WIDTH);
         canvas.height = Math.min(viewportHeight, MAX_GAME_HEIGHT);
         gameContainer.style.maxWidth = `${MAX_GAME_WIDTH}px`;
         gameContainer.style.maxHeight = `${MAX_GAME_HEIGHT}px`;
     }
 
-    isMobileDevice = viewportWidth < 768;
-    mobileControls.style.display = isMobileDevice ? 'flex' : 'none';
-
+    // Сброс позиции игрока на землю
     player.y = canvas.height - GROUND_HEIGHT - player.height;
     
+    // Обновляем возможные высоты птиц
     OBSTACLE_BIRD_Y[0] = canvas.height - GROUND_HEIGHT - OBSTACLE_BIRD_SIZE - 5; 
     OBSTACLE_BIRD_Y[1] = canvas.height - GROUND_HEIGHT - OBSTACLE_BIRD_SIZE - 60;
     OBSTACLE_BIRD_Y[2] = canvas.height - GROUND_HEIGHT - OBSTACLE_BIRD_SIZE - 120;
@@ -251,23 +262,19 @@ function draw() {
     ctx.fillStyle = '#7CFC00';
     ctx.fillRect(0, canvas.height - GROUND_HEIGHT, canvas.width, GROUND_HEIGHT);
 
-    // === НОВОЕ: Рисуем игрока в зависимости от его состояния ===
-    let playerImage = walkImage; // По умолчанию - ходьба
+    let playerImage = walkImage; 
     if (player.isDucking) {
-        playerImage = sitImage; // Если приседает
+        playerImage = sitImage; 
     } else if (player.isJumping || !player.onGround) {
-        playerImage = jumpImage; // Если прыгает или в воздухе
+        playerImage = jumpImage; 
     }
 
     if (playerImage.complete) {
-        // Убедитесь, что изображения загружены
         ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
     } else {
-        // Резервный вариант, если изображения не загружены
         ctx.fillStyle = player.isDucking ? 'orange' : 'blue';
         ctx.fillRect(player.x, player.y, player.width, player.height);
     }
-    // =========================================================
 
     obstacles.forEach(obstacle => {
         if (obstacle.type === OBSTACLE_CACTUS) {
